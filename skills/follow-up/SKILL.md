@@ -22,7 +22,8 @@ otherwise "Anonymous"), `when`, `where`, `device`, and on paid plans `time`,
 say so once and work with opens only.
 
 For a fillable PDF, also check `npx linkjar responses <link> --json`: each response
-has `who`, `email`, `when` and `fields` (their answers); signed ones also have
+has `who`, `email`, `when` and `answers` (each with a readable `label` and its
+`value`, in the form's order; use the labels when you talk about them); signed ones also have
 `signed: true`, `signer_name` and `audit` (signed time, location).
 
 ## 2. Read it like a seller

@@ -66,8 +66,9 @@ twice yesterday, read 94% and spent longest on pricing; Priya hasn't opened it y
 Good moment to follow up with Sam about pricing." No views yet is useful news too.
 
 Fillable PDFs (order forms, applications, agreements): once the owner turns on
-"Enable submissions" in the document's settings (PDF view only; flipbooks and
-presentations can't be filled in), visitors fill in the form and press Submit. If the PDF has signature fields, they sign there (draw or
+"Enable submissions" in the document's settings (paid plans; PDF view only, since
+flipbooks and presentations can't be filled in), visitors fill in the form and
+press Submit. The owner can rename how each field is labelled there too. If the PDF has signature fields, they sign there (draw or
 type, after agreeing to sign electronically); both sides get a signed PDF with a
 signature certificate (time, IP, location, device, consent). Read what they sent with:
 

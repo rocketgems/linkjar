@@ -177,3 +177,16 @@ test('responses shows signatures, and --save-signed downloads each signed PDF', 
   assert.match(files[0], /Sam Lee 2026-10-15 aaaaaaaa\.pdf$/);
   assert.match(readFileSync(files[0], 'utf8'), /^%PDF-1.7 signed \/api\/v1\/documents\/agreement\/responses\/aaaaaaaa-1111-2222-3333-444444444444\/signed.pdf/);
 });
+
+test('responses --csv heads columns with readable labels, in the PDF order', async () => {
+  const { responsesCsv } = await import('../src/commands.js');
+  const csv = responsesCsv([
+    { when: '2026-10-16', who: 'Ann', email: '', fields: { 'f1_02[0]': 'Acme', 'f1_01[0]': 'Ann Lee' },
+      answers: [{ name: 'f1_01[0]', label: 'Name', value: 'Ann Lee' }, { name: 'f1_02[0]', label: 'Business name', value: 'Acme' }] },
+    { when: '2026-10-15', who: 'Bo', email: '', fields: { 'f1_01[0]': 'Bo' }, answers: [{ name: 'f1_01[0]', label: 'Name', value: 'Bo' }] },
+  ]);
+  const [header, first, second] = csv.split('\n');
+  assert.equal(header, 'Submitted at,Respondent,Respondent email,Name,Business name');
+  assert.equal(first, '2026-10-15,Bo,,Bo,');
+  assert.equal(second, '2026-10-16,Ann,,Ann Lee,Acme');
+});

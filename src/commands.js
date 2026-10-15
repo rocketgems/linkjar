@@ -374,11 +374,26 @@ function csvCell(value) {
 }
 
 export function responsesCsv(rows) {
+  // Columns: every field anyone answered, in the PDF's order (`answers`),
+  // headed by its readable label; servers without `answers` give raw names.
   const names = [];
-  for (const r of [...rows].reverse()) for (const n of Object.keys(r.fields || {})) if (!names.includes(n)) names.push(n);
+  const labels = {};
+  for (const r of [...rows].reverse()) {
+    for (const a of r.answers || []) {
+      if (!names.includes(a.name)) names.push(a.name);
+      labels[a.name] = labels[a.name] || a.label;
+    }
+    for (const n of Object.keys(r.fields || {})) if (!names.includes(n)) names.push(n);
+  }
+  const seen = {};
+  const headers = names.map((n) => {
+    const label = labels[n] || n;
+    seen[label.toLowerCase()] = (seen[label.toLowerCase()] || 0) + 1;
+    return seen[label.toLowerCase()] > 1 ? `${label} (${seen[label.toLowerCase()]})` : label;
+  });
   const signed = rows.some((r) => r.signed);
   const signedCols = signed ? ['Signed by', 'Signed at', 'Signer IP', 'Signer location'] : [];
-  const lines = [['Submitted at', 'Respondent', 'Respondent email', ...signedCols, ...names].map(csvCell).join(',')];
+  const lines = [['Submitted at', 'Respondent', 'Respondent email', ...signedCols, ...headers].map(csvCell).join(',')];
   for (const r of [...rows].reverse()) {
     const a = r.audit || {};
     const signedValues = signed ? [r.signer_name, a.signed_at, a.ip, a.location] : [];
