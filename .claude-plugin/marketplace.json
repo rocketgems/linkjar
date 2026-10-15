@@ -1,0 +1,11 @@
+{
+  "name": "linkjar",
+  "owner": { "name": "Linkjar", "url": "https://linkjar.com" },
+  "plugins": [
+    {
+      "name": "linkjar",
+      "source": "./",
+      "description": "Send decks, proposals, PDFs and HTML pages as branded, tracked links, and check who opened them."
+    }
+  ]
+}

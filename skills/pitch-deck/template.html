@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{Company}}: {{one-line pitch}}</title>
+<style>
+  /* Slides scroll vertically and snap, so the deck works on a phone and the
+     viewer's scroll depth = how many slides they saw. Arrow keys / space page. */
+  :root { --brand: #2563eb; --ink: #0f172a; --muted: #64748b; --bg: #ffffff; --soft: #f1f5f9; }
+  * { box-sizing: border-box; }
+  html { scroll-snap-type: y mandatory; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif; color: var(--ink); background: var(--soft); }
+  .slide { scroll-snap-align: start; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 4vh 4vw; }
+  .frame { width: min(1200px, 100%); aspect-ratio: 16 / 9; background: var(--bg); border-radius: 18px; box-shadow: 0 10px 40px rgba(15,23,42,.08);
+           padding: clamp(24px, 5%, 72px); display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+  @media (max-aspect-ratio: 1/1) { .frame { aspect-ratio: auto; min-height: 80vh; } }
+  .kicker { font-size: clamp(12px, 1.2vw, 16px); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--brand); }
+  h1 { font-size: clamp(34px, 5.5vw, 76px); line-height: 1.05; letter-spacing: -.03em; margin: .3em 0; }
+  h2 { font-size: clamp(26px, 3.6vw, 52px); line-height: 1.1; letter-spacing: -.02em; margin: .3em 0 .5em; }
+  p, li { font-size: clamp(16px, 1.8vw, 26px); line-height: 1.45; color: var(--muted); }
+  ul { padding-left: 1.1em; margin: 0; }
+  .big { font-size: clamp(48px, 9vw, 140px); font-weight: 800; letter-spacing: -.04em; color: var(--brand); line-height: 1; }
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: clamp(16px, 3vw, 40px); }
+  .stat .big { font-size: clamp(36px, 5vw, 80px); }
+  .bars { display: flex; align-items: flex-end; gap: 2%; height: 40%; min-height: 120px; }
+  .bars div { flex: 1; background: var(--brand); border-radius: 6px 6px 0 0; opacity: .85; }
+  .counter { position: fixed; right: 16px; bottom: 12px; font-size: 13px; color: var(--muted); }
+  @media print { html { scroll-snap-type: none; } .slide { min-height: auto; page-break-after: always; } .counter { display: none; } }
+</style>
+</head>
+<body>
+<!-- One <h2> per slide, short and specific ("Traction", "The ask"): the
+     tracker reports which headings each viewer reached. -->
+
+<section class="slide" id="cover"><div class="frame">
+  <div class="kicker">{{Company}}</div>
+  <h1>{{One-line pitch: what you do, for whom}}</h1>
+  <p>{{Round, e.g. "Raising $2M seed"}} · {{Founder}}, {{email}}</p>
+</div></section>
+
+<section class="slide" id="problem"><div class="frame">
+  <div class="kicker">Problem</div>
+  <h2>{{The pain, stated as a claim}}</h2>
+  <ul><li>{{Evidence: cost, frequency, who has it}}</li></ul>
+</div></section>
+
+<section class="slide" id="solution"><div class="frame">
+  <div class="kicker">Solution</div>
+  <h2>{{What it does, in one sentence}}</h2>
+  <p>{{How it works, or a product image: <img src="{{https://image URL}}" alt="" style="max-width:100%;border-radius:12px">}}</p>
+</div></section>
+
+<section class="slide" id="traction"><div class="frame">
+  <div class="kicker">Traction</div>
+  <h2>{{Headline metric and growth}}</h2>
+  <div class="bars" aria-label="{{metric by month}}"><div style="height:20%"></div><div style="height:35%"></div><div style="height:60%"></div><div style="height:100%"></div></div>
+</div></section>
+
+<section class="slide" id="market"><div class="frame">
+  <div class="kicker">Market</div>
+  <h2>{{Who buys and how many}}</h2>
+  <div class="cols"><div class="stat"><div class="big">{{$X}}</div><p>{{what it measures, bottom-up}}</p></div></div>
+</div></section>
+
+<section class="slide" id="business-model"><div class="frame"><div class="kicker">Business model</div><h2>{{How you make money}}</h2></div></section>
+<section class="slide" id="competition"><div class="frame"><div class="kicker">Competition</div><h2>{{Why you win}}</h2></div></section>
+<section class="slide" id="team"><div class="frame"><div class="kicker">Team</div><h2>{{Why this team}}</h2></div></section>
+
+<section class="slide" id="ask"><div class="frame">
+  <div class="kicker">The ask</div>
+  <h2>{{Raising $X to reach Y by Z}}</h2>
+  <ul><li>{{Use of funds}}</li></ul>
+</div></section>
+
+<div class="counter" id="counter"></div>
+<script>
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  function current() { var y = window.scrollY + window.innerHeight / 2; for (var i = slides.length - 1; i >= 0; i--) if (slides[i].offsetTop <= y) return i; return 0; }
+  function go(i) { i = Math.max(0, Math.min(slides.length - 1, i)); slides[i].scrollIntoView({ behavior: 'smooth' }); }
+  document.addEventListener('keydown', function (e) {
+    if (['ArrowDown', 'ArrowRight', 'PageDown', ' '].indexOf(e.key) >= 0) { e.preventDefault(); go(current() + 1); }
+    if (['ArrowUp', 'ArrowLeft', 'PageUp'].indexOf(e.key) >= 0) { e.preventDefault(); go(current() - 1); }
+  });
+  function count() { document.getElementById('counter').textContent = (current() + 1) + ' / ' + slides.length; }
+  window.addEventListener('scroll', count, { passive: true }); count();
+</script>
+</body>
+</html>

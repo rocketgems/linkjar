@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{Customer}} + {{Sender company}}: {{result}}</title>
+<style>
+  /* Swap --brand for the sender's colour. Everything else derives from it. */
+  :root { --brand: #2563eb; --ink: #0f172a; --muted: #475569; --line: #e2e8f0; --soft: #f8fafc; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif; color: var(--ink); background: #fff; }
+  main { max-width: 760px; margin: 0 auto; padding: 56px 24px 96px; }
+  header.cover { border-bottom: 1px solid var(--line); padding-bottom: 32px; margin-bottom: 40px; }
+  .eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--brand); }
+  h1 { font-size: clamp(30px, 5vw, 44px); line-height: 1.15; letter-spacing: -.02em; margin: 12px 0 16px; }
+  h2 { font-size: 24px; letter-spacing: -.01em; margin: 56px 0 12px; }
+  h3 { font-size: 18px; margin: 28px 0 8px; }
+  p, li { color: var(--muted); }
+  strong { color: var(--ink); }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 15px; color: var(--muted); }
+  .callout { background: var(--soft); border-left: 4px solid var(--brand); padding: 16px 20px; border-radius: 8px; margin: 24px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 16px; }
+  th, td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  td.num, th.num { text-align: right; white-space: nowrap; }
+  tr.total td { font-weight: 700; color: var(--ink); border-bottom: 0; }
+  .timeline { list-style: none; padding: 0; margin: 16px 0; }
+  .timeline li { position: relative; padding: 0 0 20px 28px; border-left: 2px solid var(--line); margin-left: 6px; }
+  .timeline li::before { content: ""; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--brand); }
+  .cta { display: inline-block; background: var(--brand); color: #fff; text-decoration: none; font-weight: 600; padding: 14px 22px; border-radius: 10px; margin-top: 8px; }
+  .scroll { overflow-x: auto; }
+  footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+  @media print { main { padding: 0; } .cta { display: none; } h2 { break-after: avoid; } }
+</style>
+</head>
+<body>
+<main>
+  <header class="cover">
+    <div class="eyebrow">Case study</div>
+    <h1>{{How Customer achieved Result with Product}}</h1>
+    <div class="meta"><span>{{Industry}}</span><span>{{Company size}}</span><span>{{Region}}</span></div>
+  </header>
+
+  <div class="callout"><strong>{{Headline result, e.g. "62% faster onboarding"}}</strong> · {{second metric}} · {{third metric}}</div>
+
+  <!-- One <h2> per section, worded as the reader would look for it: the
+       tracker reports which headings each viewer reached. -->
+
+  <section id="challenge"><h2>The challenge</h2><p>{{Situation before, in the customer's terms.}}</p></section>
+  <section id="solution"><h2>The solution</h2><p>{{What they rolled out and how long it took.}}</p></section>
+  <section id="results"><h2>The results</h2><ul><li>{{Metric, before → after}}</li></ul></section>
+  <section id="quote"><h2>In their words</h2><div class="callout">“{{Real quote only. Never invent one.}}” <br><strong>{{Name, title}}</strong></div></section>
+  <section id="next-steps"><h2>Get the same result</h2><a class="cta" href="{{https://booking link}}">{{Talk to us}}</a></section>
+
+  <footer>{{Sender name}} · {{email}} · {{Sender company}}</footer>
+</main>
+</body>
+</html>

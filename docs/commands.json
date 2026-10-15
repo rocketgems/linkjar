@@ -1,0 +1,58 @@
+{
+  "version": "0.1.0",
+  "main_help": "linkjar 0.1.0: send decks, proposals, PDFs and HTML pages as branded,\ntracked links, and see who opened them.\n\nUsage: linkjar <command> [options]\n\nCommands:\n  login              Log in through the browser (or --key <api key>)\n  logout             Forget the saved login\n  whoami             Show the account and workspace in use\n  send <path|->      Publish a PDF, Office file, HTML file, folder (with index.html) or stdin HTML\n  update <ref> <path|->  Replace what a link shows; the link stays the same\n  list               Your recent documents with view counts\n  activity <ref>     Who opened it, when, how far they read (alias: views)\n  responses <ref>    What people submitted on a fillable PDF (--csv for a spreadsheet)\n  link <ref>         A personal link for one person (--name, --email)\n  settings <ref>     Password, email gate, allowed domains, expiry, button\n  room <title> <ref...>  Several documents behind one link\n  open <ref>         Open the document's settings page in the browser\n  skills [install]   List agent skills, or install them for Claude Code\n\n<ref> is a link, its slug (the part after the domain) or its id.\n\nGlobal options:\n  --json             Print the raw JSON response (for scripts and agents)\n  --url <url>        Server (default https://linkjar.com, or LINKJAR_URL)\n  -h, --help         Help for a command: linkjar send --help\n  -v, --version\n\nAuth: `linkjar login` stores a token in ~/.config/linkjar/config.json.\nIn CI or agents, set LINKJAR_API_KEY instead (Settings → Claude, CLI & API).\n\nExamples:\n  linkjar send deck.pdf --for \"Sam Lee <sam@acme.com>\"\n  linkjar send ./proposal-site --title \"Acme proposal\" --password hunter22\n  linkjar activity acme-proposal\n",
+  "commands": [
+    {
+      "name": "login",
+      "help": "Usage: linkjar login [--key <api key>] [--no-browser]\n\nLogs in through your browser (OAuth). The token is saved to the config file\nwith owner-only permissions and is never printed.\n\n  --key <key>     Save an API key (starts with lj_) instead of logging in\n  --no-browser    Don't try to open a browser; just print the login link\n\nExamples:\n  linkjar login\n  linkjar login --no-browser       # over SSH: open the printed link anywhere\n  LINKJAR_API_KEY=lj_... linkjar whoami   # no login needed with the env var"
+    },
+    {
+      "name": "logout",
+      "help": "Usage: linkjar logout\n\nDeletes the saved login (config file)."
+    },
+    {
+      "name": "whoami",
+      "help": "Usage: linkjar whoami\n\nShows the account and workspace the CLI is using."
+    },
+    {
+      "name": "send",
+      "help": "Usage: linkjar send <path|-> [options]\n\nPublishes a file and prints its link (first line of output).\n  path: .pdf, .doc(x), .ppt(x), .xls(x), .html/.htm, .zip, or a folder with an\n        index.html at its top (sent as a website). \"-\" reads HTML from stdin.\n\nOptions:\n  --title <text>          Title shown to viewers (default: file name or <title>)\n  --for \"Name <email>\"    Also make a personal link for this person (repeatable)\n  --password <pw>         Visitors need this password to open it\n  --email-gate            Ask visitors for their email first (Pro)\n  --domains <a.com,b.com> Only allow emails at these company domains\n  --expires <YYYY-MM-DD>  Link stops working after this date (paid plans)\n  --cta-label <text>      Call-to-action button text, e.g. \"Book a call\"\n  --cta-url <url>         Where the button goes\n\nExamples:\n  linkjar send deck.pdf\n  linkjar send proposal.html --for \"Sam Lee <sam@acme.com>\" --for \"priya@acme.com\"\n  linkjar send ./site --title \"Q4 plan\" --email-gate --domains acme.com\n  cat page.html | linkjar send - --title \"One-pager\""
+    },
+    {
+      "name": "update",
+      "help": "Usage: linkjar update <ref> <path|-> [--title <text>]\n\nReplaces what an existing link shows. Everyone who has the link sees the new\nversion. Accepts the same kinds of path as send.\n\nExamples:\n  linkjar update acme-proposal proposal-v2.html\n  linkjar update https://linkjar.com/acme-proposal ./site"
+    },
+    {
+      "name": "list",
+      "help": "Usage: linkjar list [--query <text>] [--limit <n>]\n\nRecent documents with their links and view counts.\n\nExamples:\n  linkjar list\n  linkjar list --query acme --json"
+    },
+    {
+      "name": "activity",
+      "help": "Usage: linkjar activity <ref> [--days <n>] [--limit <n>]\n\nWho opened it, when, from where; on Pro also time spent, how far they read\nand what they clicked. Alias: linkjar views.\n\nExamples:\n  linkjar activity acme-proposal\n  linkjar activity acme-proposal --days 7 --json"
+    },
+    {
+      "name": "responses",
+      "help": "Usage: linkjar responses <ref> [--limit <n>] [--csv] [--save-signed <dir>]\n\nWhat people filled in, signed and submitted on a fillable PDF: who, when and\ntheir answers. Signed responses show who signed, when and where.\n\n  --csv                 One row per response (columns: Submitted at, Respondent,\n                        Respondent email, the signature columns when anything was\n                        signed, then every field), ready for a spreadsheet\n  --save-signed <dir>   Download each signed PDF (with its signature certificate)\n                        into <dir>\n\nExamples:\n  linkjar responses order-form\n  linkjar responses order-form --csv > responses.csv\n  linkjar responses agreement --save-signed ./signed\n  linkjar responses order-form --json"
+    },
+    {
+      "name": "link",
+      "help": "Usage: linkjar link <ref> --name <name> [--email <email>]\n\nA personal link for one person, so their views show under their name.\n\nExamples:\n  linkjar link acme-proposal --name \"Sam Lee\" --email sam@acme.com"
+    },
+    {
+      "name": "settings",
+      "help": "Usage: linkjar settings <ref> [options]\n\nChanges how a link behaves. Only the options you pass change.\n\nOptions:\n  --title <text>\n  --password <pw>         Visitors need this password to open it\n  --email-gate            Ask visitors for their email first (Pro)\n  --domains <a.com,b.com> Only allow emails at these company domains\n  --expires <YYYY-MM-DD>  Link stops working after this date (paid plans)\n  --cta-label <text>      Call-to-action button text, e.g. \"Book a call\"\n  --cta-url <url>         Where the button goes\n  --no-email-gate         Turn the email gate off\n  --remove-password       Turn password protection off\n  --remove-expiry         Remove the expiry date\n  --remove-cta            Remove the button\n\nExamples:\n  linkjar settings acme-proposal --password hunter22 --expires 2026-12-31\n  linkjar settings acme-proposal --remove-password --no-email-gate"
+    },
+    {
+      "name": "room",
+      "help": "Usage: linkjar room <title> <ref...> [--description <text>] [--email-gate]\n\nPuts several documents behind one link (a deal room). Pro.\n\nExamples:\n  linkjar room \"Acme deal room\" acme-proposal case-study security-faq --email-gate"
+    },
+    {
+      "name": "open",
+      "help": "Usage: linkjar open <ref>\n\nOpens the document's settings page in your browser."
+    },
+    {
+      "name": "skills",
+      "help": "Usage: linkjar skills [list]\n       linkjar skills install [name...] [--dir <folder>]\n\nAgent skills teach Claude Code (and other agents) to write proposals, pitch\ndecks, one-pagers and case studies, send them with this CLI and follow up.\ninstall downloads them into ~/.claude/skills/ (or --dir); with no names it\ninstalls all of them. No login needed.\n\nExamples:\n  linkjar skills\n  linkjar skills install\n  linkjar skills install proposal follow-up\n  linkjar skills install --dir ./.claude/skills     # just this project"
+    }
+  ]
+}

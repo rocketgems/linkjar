@@ -1,0 +1,9 @@
+{
+  "name": "linkjar",
+  "version": "0.1.0",
+  "description": "Send decks, proposals, PDFs and HTML pages as branded, tracked Linkjar links, and check who opened them.",
+  "author": { "name": "Linkjar", "url": "https://linkjar.com" },
+  "homepage": "https://linkjar.com",
+  "license": "MIT",
+  "keywords": ["linkjar", "share", "tracking", "pdf", "proposal", "sales"]
+}
