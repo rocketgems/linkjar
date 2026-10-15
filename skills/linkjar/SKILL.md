@@ -65,8 +65,9 @@ Summarize for the user as a follow-up suggestion, not a raw dump, e.g. "Sam open
 twice yesterday, read 94% and spent longest on pricing; Priya hasn't opened it yet.
 Good moment to follow up with Sam about pricing." No views yet is useful news too.
 
-Fillable PDFs (order forms, applications, agreements): visitors fill in the form in
-the viewer and press Submit. If the PDF has signature fields, they sign there (draw or
+Fillable PDFs (order forms, applications, agreements): once the owner turns on
+"Enable submissions" in the document's settings (PDF view only; flipbooks and
+presentations can't be filled in), visitors fill in the form and press Submit. If the PDF has signature fields, they sign there (draw or
 type, after agreeing to sign electronically); both sides get a signed PDF with a
 signature certificate (time, IP, location, device, consent). Read what they sent with:
 
