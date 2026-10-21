@@ -64,6 +64,9 @@ before(async () => {
         { id: 'bbbbbbbb-1111-2222-3333-444444444444', when: '2026-10-15T17:00:00Z', who: 'Ann', email: '', signed: false, fields: { full_name: 'Ann' } },
       ] });
     }
+    if (req.method === 'PATCH' && req.url === '/api/v1/documents/board-deck') {
+      return json(200, { link: base + '/board-deck/', changed: ['watermark'], message: 'Updated: watermark.' });
+    }
     json(404, { error: 'Not found' });
   });
   await new Promise((r) => server.listen(0, '127.0.0.1', r));
@@ -189,4 +192,20 @@ test('responses --csv heads columns with readable labels, in the PDF order', asy
   assert.equal(header, 'Submitted at,Respondent,Respondent email,Name,Business name');
   assert.equal(first, '2026-10-15,Bo,,Bo,');
   assert.equal(second, '2026-10-16,Ann,,Ann Lee,Acme');
+});
+
+test('settings --watermark-text sends the template, --no-watermark turns it off', async () => {
+  const dir = mkdtempSync(join(tmpdir(), 'lj-cmd-'));
+  const env = { LINKJAR_API_KEY: 'good-token', XDG_CONFIG_HOME: dir };
+  seen.length = 0;
+  let r = await run(['settings', 'board-deck', '--watermark-text', '{name} · {company}'], { env });
+  assert.equal(r.code, 0, r.err);
+  assert.deepEqual(JSON.parse(seen[0].body.toString()), { watermark: '{name} · {company}' });
+  seen.length = 0;
+  r = await run(['settings', 'board-deck', '--no-watermark'], { env });
+  assert.equal(r.code, 0, r.err);
+  assert.deepEqual(JSON.parse(seen[0].body.toString()), { watermark: false });
+  seen.length = 0;
+  r = await run(['settings', 'board-deck', '--watermark'], { env });
+  assert.deepEqual(JSON.parse(seen[0].body.toString()), { watermark: true });
 });

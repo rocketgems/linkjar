@@ -14,7 +14,7 @@ const GLOBAL = { json: 'boolean', url: 'string', help: 'boolean', version: 'bool
 const ALIASES = { h: 'help', v: 'version' };
 const LINK_SETTINGS = {
   password: 'string', 'email-gate': 'boolean', domains: 'string', expires: 'string',
-  'cta-label': 'string', 'cta-url': 'string',
+  'cta-label': 'string', 'cta-url': 'string', watermark: 'boolean', 'watermark-text': 'string',
 };
 
 const SETTINGS_HELP = `
@@ -23,7 +23,11 @@ const SETTINGS_HELP = `
   --domains <a.com,b.com> Only allow emails at these company domains
   --expires <YYYY-MM-DD>  Link stops working after this date (paid plans)
   --cta-label <text>      Call-to-action button text, e.g. "Book a call"
-  --cta-url <url>         Where the button goes`;
+  --cta-url <url>         Where the button goes
+  --watermark             PDFs (Pro): stamp every page with who is viewing
+                          ("{email} · {date}"); --no-watermark turns it off
+  --watermark-text <text> Watermark text from {email} {name} {company} {date}
+                          {time} {ip}, e.g. "{name} · {company} · {date}"`;
 
 const MAIN_HELP = `linkjar ${VERSION}: send decks, proposals, PDFs and HTML pages as branded,
 tracked links, and see who opened them.
@@ -180,7 +184,8 @@ Options:
 
 Examples:
   linkjar settings acme-proposal --password hunter22 --expires 2026-12-31
-  linkjar settings acme-proposal --remove-password --no-email-gate`,
+  linkjar settings acme-proposal --remove-password --no-email-gate
+  linkjar settings board-deck --watermark-text "{name} · {company} · {date}"`,
     run: settings,
   },
   room: {
@@ -227,6 +232,8 @@ function settingsBody(flags) {
   }
   if (flags['cta-label'] !== undefined) body.cta_label = flags['cta-label'];
   if (flags['cta-url'] !== undefined) body.cta_url = flags['cta-url'];
+  if (flags['watermark-text'] !== undefined) body.watermark = flags['watermark-text'];
+  else if (flags.watermark !== undefined) body.watermark = flags.watermark;
   if (flags.title !== undefined) body.title = flags.title;
   return body;
 }
