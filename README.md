@@ -73,11 +73,10 @@ dev server.
 The writing skills ship a `template.html` with one `<h2>` per section, because the
 viewer reports which headings each person scrolled to. Ways to install them:
 
-- **Claude Code plugin:** this folder is also a Claude Code plugin and marketplace
-  (`.claude-plugin/`). Publish it as the root of a **public GitHub repository**,
-  because the marketplace only works from a public repo. Users then run:
+- **Claude Code plugin:** this repo is also a Claude Code plugin and marketplace
+  (`.claude-plugin/`):
   ```
-  /plugin marketplace add <github-owner>/<repo>
+  /plugin marketplace add rocketgems/linkjar
   /plugin install linkjar@linkjar
   ```
 - **Any agent:** copy the folders under `skills/` into the agent's skills folder, for

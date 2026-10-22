@@ -33,5 +33,12 @@
     "skill"
   ],
   "homepage": "https://linkjar.com/docs/cli/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rocketgems/linkjar.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rocketgems/linkjar/issues"
+  },
   "license": "MIT"
 }
